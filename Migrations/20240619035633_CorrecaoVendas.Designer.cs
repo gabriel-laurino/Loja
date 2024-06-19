@@ -4,6 +4,7 @@ using Loja.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loja.Migrations
 {
     [DbContext(typeof(LojaDbContext))]
-    partial class LojaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240619035633_CorrecaoVendas")]
+    partial class CorrecaoVendas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,7 +134,7 @@ namespace Loja.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataVenda")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("NumeroNotaFiscal")
                         .IsRequired()
