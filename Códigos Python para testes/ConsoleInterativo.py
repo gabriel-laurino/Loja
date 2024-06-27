@@ -1,12 +1,16 @@
 import requests
 import json
-import uuid
+
+##############################################################################################
+# INSERT INTO Usuarios (Login, Senha, Email)
+#     VALUES ('Admin', '$2a$11$xQCiA03rTK8m.pz1niXjpuEVggCk/BicQxZrhEwvYxs942gDrVYOG', 'Admin@admin.com'); 
+##############################################################################################
 
 BASE_URL = "http://localhost:5085"
 LOGIN_URL = f"{BASE_URL}/login"
 ADMIN_CREDENTIALS = {
-    "login": "admin",
-    "senha": "admin"
+    "login": "Admin",
+    "senha": "Admin"
 }
 
 def get_token():
@@ -18,80 +22,140 @@ def get_token():
         print(response.text)
         return None
 
-def create_venda(token):
-    url = f"{BASE_URL}/vendas"
-    cliente_id = int(input("Digite o ID do cliente: "))
-    produto_id = int(input("Digite o ID do produto: "))
-    quantidade_vendida = int(input("Digite a quantidade vendida: "))
-    numero_nota_fiscal = input("Digite o número da nota fiscal (ou deixe vazio para gerar automaticamente): ")
+def get_all_clients(token):
+    url = f"{BASE_URL}/clientes"
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        clientes = response.json()
+        print("Clientes disponíveis:")
+        for cliente in clientes:
+            print(f"ID: {cliente['id']}, Nome: {cliente['nome']}")
+        return {cliente['id']: cliente['nome'] for cliente in clientes}
+    else:
+        print("Erro ao obter lista de clientes")
+        print(response.text)
+        return {}
 
-    if not numero_nota_fiscal:
-        numero_nota_fiscal = str(uuid.uuid4())
+def get_all_servicos(token):
+    url = f"{BASE_URL}/servicos"
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        servicos = response.json()
+        print("Serviços disponíveis:")
+        for servico in servicos:
+            print(f"ID: {servico['id']}, Nome: {servico['nome']}")
+        return {servico['id']: servico['nome'] for servico in servicos}
+    else:
+        print("Erro ao obter lista de serviços")
+        print(response.text)
+        return {}
 
-    venda = {
-        "ClienteId": cliente_id,
-        "ProdutoId": produto_id,
-        "QuantidadeVendida": quantidade_vendida,
-        "NumeroNotaFiscal": numero_nota_fiscal
+def create_servico(token):
+    url = f"{BASE_URL}/servicos"
+    nome = input("Digite o nome do serviço: ")
+    preco = float(input("Digite o preço do serviço: "))
+    status = input("Digite o status do serviço (True/False): ").lower() == 'true'
+    
+    servico = {
+        "Nome": nome,
+        "Preco": preco,
+        "Status": status
     }
     headers = {"Content-Type": "application/json", "Authorization": f"Bearer {token}"}
-    response = requests.post(url, data=json.dumps(venda), headers=headers)
+    response = requests.post(url, data=json.dumps(servico), headers=headers)
     if response.status_code == 201:
-        print("Venda criada com sucesso!")
+        print("Serviço criado com sucesso!")
     else:
-        print("Erro ao criar venda")
+        print("Erro ao criar serviço")
         print(response.text)
 
-def get_vendas_by_produto_detalhada(token):
-    produto_id = int(input("Digite o ID do produto: "))
-    url = f"{BASE_URL}/vendas/produto/detalhada/{produto_id}"
+def update_servico(token):
+    url = f"{BASE_URL}/servicos/{int(input('Digite o ID do serviço: '))}"
+    nome = input("Digite o nome do serviço: ")
+    preco = float(input("Digite o preço do serviço: "))
+    status = input("Digite o status do serviço (True/False): ").lower() == 'true'
+    
+    servico = {
+        "Nome": nome,
+        "Preco": preco,
+        "Status": status
+    }
+    headers = {"Content-Type": "application/json", "Authorization": f"Bearer {token}"}
+    response = requests.put(url, data=json.dumps(servico), headers=headers)
+    if response.status_code == 200:
+        print("Serviço atualizado com sucesso!")
+    else:
+        print("Erro ao atualizar serviço")
+        print(response.text)
+
+def get_servico(token):
+    url = f"{BASE_URL}/servicos/{int(input('Digite o ID do serviço: '))}"
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        vendas = response.json()
-        for venda in vendas:
-            print(venda)
+        servico = response.json()
+        print(servico)
     else:
-        print("Erro ao consultar vendas por produto (detalhada)")
+        print("Erro ao consultar serviço")
         print(response.text)
 
-def get_vendas_by_produto_sumarizada(token):
-    produto_id = int(input("Digite o ID do produto: "))
-    url = f"{BASE_URL}/vendas/produto/sumarizada/{produto_id}"
-    headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        vendas = response.json()
-        for venda in vendas:
-            print(venda)
-    else:
-        print("Erro ao consultar vendas por produto (sumarizada)")
-        print(response.text)
+def create_contrato(token):
+    clientes = get_all_clients(token)
+    if not clientes:
+        return
 
-def get_vendas_by_cliente_detalhada(token):
     cliente_id = int(input("Digite o ID do cliente: "))
-    url = f"{BASE_URL}/vendas/cliente/detalhada/{cliente_id}"
-    headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        vendas = response.json()
-        for venda in vendas:
-            print(venda)
+    if cliente_id not in clientes:
+        print("ID de cliente inválido.")
+        return
+
+    servicos = get_all_servicos(token)
+    if not servicos:
+        return
+
+    servico_id = int(input("Digite o ID do serviço: "))
+    if servico_id not in servicos:
+        print("ID de serviço inválido.")
+        return
+
+    preco_cobrado = float(input("Digite o preço cobrado: "))
+    data_contratacao = input("Digite a data de contratação (YYYY-MM-DD): ")
+    
+    contrato = {
+        "ClienteId": cliente_id,
+        "ServicoId": servico_id,
+        "PrecoCobrado": preco_cobrado,
+        "DataContratacao": data_contratacao
+    }
+    headers = {"Content-Type": "application/json", "Authorization": f"Bearer {token}"}
+    response = requests.post(f"{BASE_URL}/contratos", data=json.dumps(contrato), headers=headers)
+    if response.status_code == 201:
+        print("Contrato criado com sucesso!")
     else:
-        print("Erro ao consultar vendas por cliente (detalhada)")
+        print("Erro ao criar contrato")
         print(response.text)
 
-def get_vendas_by_cliente_sumarizada(token):
+def get_servicos_contratados_por_cliente(token):
+    clientes = get_all_clients(token)
+    if not clientes:
+        return
+
     cliente_id = int(input("Digite o ID do cliente: "))
-    url = f"{BASE_URL}/vendas/cliente/sumarizada/{cliente_id}"
+    if cliente_id not in clientes:
+        print("ID de cliente inválido.")
+        return
+
+    url = f"{BASE_URL}/clientes/{cliente_id}/servicos"
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        vendas = response.json()
-        for venda in vendas:
-            print(venda)
+        servicos = response.json()
+        for servico in servicos:
+            print(servico)
     else:
-        print("Erro ao consultar vendas por cliente (sumarizada)")
+        print("Erro ao consultar serviços contratados por cliente")
         print(response.text)
 
 def main():
@@ -101,25 +165,25 @@ def main():
     
     while True:
         print("\nEscolha uma opção:")
-        print("1. Criar Venda")
-        print("2. Consultar Vendas por Produto (Detalhada)")
-        print("3. Consultar Vendas por Produto (Sumarizada)")
-        print("4. Consultar Vendas por Cliente (Detalhada)")
-        print("5. Consultar Vendas por Cliente (Sumarizada)")
+        print("1. Criar Serviço")
+        print("2. Atualizar Serviço")
+        print("3. Consultar Serviço")
+        print("4. Registrar Contrato")
+        print("5. Consultar Serviços Contratados por Cliente")
         print("6. Sair")
 
         choice = input("Digite sua escolha: ")
 
         if choice == "1":
-            create_venda(token)
+            create_servico(token)
         elif choice == "2":
-            get_vendas_by_produto_detalhada(token)
+            update_servico(token)
         elif choice == "3":
-            get_vendas_by_produto_sumarizada(token)
+            get_servico(token)
         elif choice == "4":
-            get_vendas_by_cliente_detalhada(token)
+            create_contrato(token)
         elif choice == "5":
-            get_vendas_by_cliente_sumarizada(token)
+            get_servicos_contratados_por_cliente(token)
         elif choice == "6":
             break
         else:

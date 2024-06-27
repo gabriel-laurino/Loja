@@ -11,5 +11,7 @@ namespace Loja.Data
         public DbSet<Fornecedor> Fornecedores { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Venda> Vendas { get; set; }
+        public DbSet<Servico> Servicos { get; set; }
+        public DbSet<Contrato> Contratos { get; set; }
     }
 }

@@ -22,6 +22,8 @@ builder.Services.AddScoped<ClientService>();
 builder.Services.AddScoped<SupplierService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SellService>();
+builder.Services.AddScoped<ServicoService>();
+builder.Services.AddScoped<ContratoService>();
 builder.Services.AddAuthorization();
 
 string secretKey = "dfhviocsjserkvknkjsdajvbejnvjfjsdf";
@@ -252,7 +254,7 @@ app.MapPost("/usuarios", async (Usuario usuario, UserService userService) =>
 {
     await userService.AddUserAsync(usuario);
     return Results.Created($"/usuario/{usuario.Id}", usuario);
-}).RequireAuthorization();
+});//.RequireAuthorization();
 
 app.MapPut("/usuarios/{id}", async (int id, Usuario usuario, UserService userService) =>
 {
@@ -264,6 +266,59 @@ app.MapDelete("/usuarios/{id}", async (int id, UserService userService) =>
 {
     await userService.DeleteUserAsync(id);
     return Results.Ok();
+}).RequireAuthorization();
+
+// Rota autenticada para listar todos os serviços
+app.MapGet("/servicos", async (ServicoService servicoService) =>
+{
+    var servicos = await servicoService.GetAllServicosAsync();
+    return Results.Ok(servicos);
+}).RequireAuthorization();
+
+// Rota autenticada para criar um novo serviço
+app.MapPost("/servicos", async (Servico servico, ServicoService servicoService) =>
+{
+    await servicoService.AddServicoAsync(servico);
+    return Results.Created($"/servicos/{servico.Id}", servico);
+}).RequireAuthorization();
+
+// Rota autenticada para atualizar os dados de um serviço existente
+app.MapPut("/servicos/{id}", async (int id, Servico servico, ServicoService servicoService) =>
+{
+    await servicoService.UpdateServicoAsync(id, servico);
+    return Results.Ok();
+}).RequireAuthorization();
+
+// Rota autenticada para consultar os dados de um serviço a partir do Id
+app.MapGet("/servicos/{id}", async (int id, ServicoService servicoService) =>
+{
+    var servico = await servicoService.GetServicoByIdAsync(id);
+    if (servico == null)
+    {
+        return Results.NotFound($"Serviço com ID {id} não encontrado.");
+    }
+    return Results.Ok(servico);
+}).RequireAuthorization();
+
+// Rota autenticada para registrar um novo contrato
+app.MapPost("/contratos", async (Contrato contrato, ContratoService contratoService) =>
+{
+    try
+    {
+        await contratoService.AddContratoAsync(contrato);
+        return Results.Created($"/contratos/{contrato.Id}", contrato);
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return Results.NotFound(ex.Message);
+    }
+}).RequireAuthorization();
+
+// Rota autenticada para consultar todos os serviços contratados por um determinado cliente
+app.MapGet("/clientes/{clienteId}/servicos", async (int clienteId, ContratoService contratoService) =>
+{
+    var contratos = await contratoService.GetContratosByClienteIdAsync(clienteId);
+    return Results.Ok(contratos);
 }).RequireAuthorization();
 
 app.Run();

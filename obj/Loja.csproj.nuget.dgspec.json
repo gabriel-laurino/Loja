@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Gabri\\OneDrive\\Documentos\\Faculdade Gabriel\\ADS\\2024\\C#\\Loja\\Loja.csproj": {}
+    "C:\\Users\\GabrielTrentinFerrei\\OneDrive\\Documentos\\Faculdade Gabriel\\ADS\\2024\\C#\\Loja\\Loja.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Gabri\\OneDrive\\Documentos\\Faculdade Gabriel\\ADS\\2024\\C#\\Loja\\Loja.csproj": {
+    "C:\\Users\\GabrielTrentinFerrei\\OneDrive\\Documentos\\Faculdade Gabriel\\ADS\\2024\\C#\\Loja\\Loja.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Gabri\\OneDrive\\Documentos\\Faculdade Gabriel\\ADS\\2024\\C#\\Loja\\Loja.csproj",
+        "projectUniqueName": "C:\\Users\\GabrielTrentinFerrei\\OneDrive\\Documentos\\Faculdade Gabriel\\ADS\\2024\\C#\\Loja\\Loja.csproj",
         "projectName": "Loja",
-        "projectPath": "C:\\Users\\Gabri\\OneDrive\\Documentos\\Faculdade Gabriel\\ADS\\2024\\C#\\Loja\\Loja.csproj",
-        "packagesPath": "C:\\Users\\Gabri\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Gabri\\OneDrive\\Documentos\\Faculdade Gabriel\\ADS\\2024\\C#\\Loja\\obj\\",
+        "projectPath": "C:\\Users\\GabrielTrentinFerrei\\OneDrive\\Documentos\\Faculdade Gabriel\\ADS\\2024\\C#\\Loja\\Loja.csproj",
+        "packagesPath": "C:\\Users\\GabrielTrentinFerrei\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\GabrielTrentinFerrei\\OneDrive\\Documentos\\Faculdade Gabriel\\ADS\\2024\\C#\\Loja\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Gabri\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\GabrielTrentinFerrei\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
