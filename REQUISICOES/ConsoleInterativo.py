@@ -142,7 +142,7 @@ def get_servicos_contratados_por_cliente(token):
     if not clientes:
         return
 
-    cliente_id = int(input("Digite o ID do cliente: "))
+    cliente_id = int(input("\nDigite o ID do cliente: "))
     if cliente_id not in clientes:
         print("\nID de cliente inválido.")
         return
@@ -152,6 +152,7 @@ def get_servicos_contratados_por_cliente(token):
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         servicos = response.json()
+        print("")
         for servico in servicos:
             print(servico)
     else:
