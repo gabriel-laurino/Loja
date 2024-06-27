@@ -18,7 +18,7 @@ def get_token():
     if response.status_code == 200:
         return response.json().get("token")
     else:
-        print("Erro ao fazer login como administrador")
+        print("\nErro ao fazer login como administrador")
         print(response.text)
         return None
 
@@ -28,12 +28,12 @@ def get_all_clients(token):
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         clientes = response.json()
-        print("Clientes disponíveis:")
+        print("\nClientes disponíveis:")
         for cliente in clientes:
             print(f"ID: {cliente['id']}, Nome: {cliente['nome']}")
         return {cliente['id']: cliente['nome'] for cliente in clientes}
     else:
-        print("Erro ao obter lista de clientes")
+        print("\nErro ao obter lista de clientes")
         print(response.text)
         return {}
 
@@ -43,18 +43,18 @@ def get_all_servicos(token):
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         servicos = response.json()
-        print("Serviços disponíveis:")
+        print("\nServiços disponíveis:")
         for servico in servicos:
             print(f"ID: {servico['id']}, Nome: {servico['nome']}")
         return {servico['id']: servico['nome'] for servico in servicos}
     else:
-        print("Erro ao obter lista de serviços")
+        print("\nErro ao obter lista de serviços")
         print(response.text)
         return {}
 
 def create_servico(token):
     url = f"{BASE_URL}/servicos"
-    nome = input("Digite o nome do serviço: ")
+    nome = input("\nDigite o nome do serviço: ")
     preco = float(input("Digite o preço do serviço: "))
     status = input("Digite o status do serviço (True/False): ").lower() == 'true'
     
@@ -66,14 +66,14 @@ def create_servico(token):
     headers = {"Content-Type": "application/json", "Authorization": f"Bearer {token}"}
     response = requests.post(url, data=json.dumps(servico), headers=headers)
     if response.status_code == 201:
-        print("Serviço criado com sucesso!")
+        print("\nServiço criado com sucesso!")
     else:
-        print("Erro ao criar serviço")
+        print("\nErro ao criar serviço")
         print(response.text)
 
 def update_servico(token):
     url = f"{BASE_URL}/servicos/{int(input('Digite o ID do serviço: '))}"
-    nome = input("Digite o nome do serviço: ")
+    nome = input("\nDigite o nome do serviço: ")
     preco = float(input("Digite o preço do serviço: "))
     status = input("Digite o status do serviço (True/False): ").lower() == 'true'
     
@@ -85,9 +85,9 @@ def update_servico(token):
     headers = {"Content-Type": "application/json", "Authorization": f"Bearer {token}"}
     response = requests.put(url, data=json.dumps(servico), headers=headers)
     if response.status_code == 200:
-        print("Serviço atualizado com sucesso!")
+        print("\nServiço atualizado com sucesso!")
     else:
-        print("Erro ao atualizar serviço")
+        print("\nErro ao atualizar serviço")
         print(response.text)
 
 def get_servico(token):
@@ -98,7 +98,7 @@ def get_servico(token):
         servico = response.json()
         print(servico)
     else:
-        print("Erro ao consultar serviço")
+        print("\nErro ao consultar serviço")
         print(response.text)
 
 def create_contrato(token):
@@ -106,7 +106,7 @@ def create_contrato(token):
     if not clientes:
         return
 
-    cliente_id = int(input("Digite o ID do cliente: "))
+    cliente_id = int(input("\nDigite o ID do cliente: "))
     if cliente_id not in clientes:
         print("ID de cliente inválido.")
         return
@@ -132,9 +132,9 @@ def create_contrato(token):
     headers = {"Content-Type": "application/json", "Authorization": f"Bearer {token}"}
     response = requests.post(f"{BASE_URL}/contratos", data=json.dumps(contrato), headers=headers)
     if response.status_code == 201:
-        print("Contrato criado com sucesso!")
+        print("\nContrato criado com sucesso!")
     else:
-        print("Erro ao criar contrato")
+        print("\nErro ao criar contrato")
         print(response.text)
 
 def get_servicos_contratados_por_cliente(token):
@@ -144,7 +144,7 @@ def get_servicos_contratados_por_cliente(token):
 
     cliente_id = int(input("Digite o ID do cliente: "))
     if cliente_id not in clientes:
-        print("ID de cliente inválido.")
+        print("\nID de cliente inválido.")
         return
 
     url = f"{BASE_URL}/clientes/{cliente_id}/servicos"
@@ -155,7 +155,7 @@ def get_servicos_contratados_por_cliente(token):
         for servico in servicos:
             print(servico)
     else:
-        print("Erro ao consultar serviços contratados por cliente")
+        print("\nErro ao consultar serviços contratados por cliente")
         print(response.text)
 
 def main():
@@ -172,7 +172,7 @@ def main():
         print("5. Consultar Serviços Contratados por Cliente")
         print("6. Sair")
 
-        choice = input("Digite sua escolha: ")
+        choice = input("\nDigite sua escolha: ")
 
         if choice == "1":
             create_servico(token)
@@ -187,7 +187,7 @@ def main():
         elif choice == "6":
             break
         else:
-            print("Opção inválida. Tente novamente.")
+            print("\nOpção inválida. Tente novamente.")
 
 if __name__ == "__main__":
     main()
