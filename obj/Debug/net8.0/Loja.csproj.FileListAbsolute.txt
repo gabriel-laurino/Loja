@@ -228,3 +228,5 @@ C:\Users\Gabri\OneDrive\Documentos\Faculdade Gabriel\ADS\2024\C#\Loja\bin\Debug\
 C:\Users\Gabri\OneDrive\Documentos\Faculdade Gabriel\ADS\2024\C#\Loja\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Gabri\OneDrive\Documentos\Faculdade Gabriel\ADS\2024\C#\Loja\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\Gabri\OneDrive\Documentos\Faculdade Gabriel\ADS\2024\C#\Loja\obj\Debug\net8.0\Loja.sourcelink.json
+C:\Users\GabrielTrentinFerrei\OneDrive\Documentos\Faculdade Gabriel\ADS\2024\C#\Loja\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\GabrielTrentinFerrei\OneDrive\Documentos\Faculdade Gabriel\ADS\2024\C#\Loja\bin\Debug\net8.0\RestSharp.dll
