@@ -159,6 +159,25 @@ def get_servicos_contratados_por_cliente(token):
         print("\nErro ao consultar serviços contratados por cliente")
         print(response.text)
 
+def create_usuario(token):
+    url = f"{BASE_URL}/usuarios"
+    login = input("\nDigite o login do usuário: ")
+    senha = input("Digite a senha do usuário: ")
+    email = input("Digite o email do usuário: ")
+    
+    usuario = {
+        "Login": login,
+        "Senha": senha,
+        "Email": email
+    }
+    headers = {"Content-Type": "application/json", "Authorization": f"Bearer {token}"}
+    response = requests.post(url, data=json.dumps(usuario), headers=headers)
+    if response.status_code == 201:
+        print("\nUsuário criado com sucesso!")
+    else:
+        print("\nErro ao criar usuário")
+        print(response.text)
+
 def main():
     token = get_token()
     if not token:
@@ -171,7 +190,8 @@ def main():
         print("3. Consultar Serviço")
         print("4. Registrar Contrato")
         print("5. Consultar Serviços Contratados por Cliente")
-        print("6. Sair")
+        print("6. Criar Usuário")
+        print("7. Sair")
 
         choice = input("\nDigite sua escolha: ")
 
@@ -186,6 +206,8 @@ def main():
         elif choice == "5":
             get_servicos_contratados_por_cliente(token)
         elif choice == "6":
+            create_usuario(token)
+        elif choice == "7":
             break
         else:
             print("\nOpção inválida. Tente novamente.")

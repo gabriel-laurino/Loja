@@ -250,11 +250,16 @@ app.MapGet("/usuarios/{id}", async (int id, UserService userService) =>
     return Results.Ok(usuario);
 }).RequireAuthorization();
 
+
+// PROVA -> Rota para criação de um usuário
+// [Usar SCRIPT.SQL para criar Admin com senha Admin em hash]
+
+// **[Deixei comentado o .RequireAuthorization(); para ser mais fácil professor.]**
 app.MapPost("/usuarios", async (Usuario usuario, UserService userService) =>
 {
     await userService.AddUserAsync(usuario);
     return Results.Created($"/usuario/{usuario.Id}", usuario);
-}).RequireAuthorization();
+});//.RequireAuthorization();
 
 app.MapPut("/usuarios/{id}", async (int id, Usuario usuario, UserService userService) =>
 {
@@ -268,28 +273,28 @@ app.MapDelete("/usuarios/{id}", async (int id, UserService userService) =>
     return Results.Ok();
 }).RequireAuthorization();
 
-// Rota autenticada para listar todos os serviços
+// PROVA -> Rota autenticada para listar todos os serviços
 app.MapGet("/servicos", async (ServicoService servicoService) =>
 {
     var servicos = await servicoService.GetAllServicosAsync();
     return Results.Ok(servicos);
 }).RequireAuthorization();
 
-// Rota autenticada para criar um novo serviço
+// PROVA -> Rota autenticada para criar um novo serviço
 app.MapPost("/servicos", async (Servico servico, ServicoService servicoService) =>
 {
     await servicoService.AddServicoAsync(servico);
     return Results.Created($"/servicos/{servico.Id}", servico);
 }).RequireAuthorization();
 
-// Rota autenticada para atualizar os dados de um serviço existente
+// PROVA -> Rota autenticada para atualizar os dados de um serviço existente
 app.MapPut("/servicos/{id}", async (int id, Servico servico, ServicoService servicoService) =>
 {
     await servicoService.UpdateServicoAsync(id, servico);
     return Results.Ok();
 }).RequireAuthorization();
 
-// Rota autenticada para consultar os dados de um serviço a partir do Id
+// PROVA -> Rota autenticada para consultar os dados de um serviço a partir do Id
 app.MapGet("/servicos/{id}", async (int id, ServicoService servicoService) =>
 {
     var servico = await servicoService.GetServicoByIdAsync(id);
@@ -300,7 +305,7 @@ app.MapGet("/servicos/{id}", async (int id, ServicoService servicoService) =>
     return Results.Ok(servico);
 }).RequireAuthorization();
 
-// Rota autenticada para registrar um novo contrato
+// PROVA -> Rota autenticada para registrar um novo contrato
 app.MapPost("/contratos", async (Contrato contrato, ContratoService contratoService) =>
 {
     try
@@ -314,7 +319,7 @@ app.MapPost("/contratos", async (Contrato contrato, ContratoService contratoServ
     }
 }).RequireAuthorization();
 
-// Rota autenticada para consultar todos os serviços contratados por um determinado cliente
+// PROVA -> Rota autenticada para consultar todos os serviços contratados por um determinado cliente
 app.MapGet("/clientes/{clienteId}/servicos", async (int clienteId, ContratoService contratoService) =>
 {
     var contratos = await contratoService.GetContratosByClienteIdAsync(clienteId);
